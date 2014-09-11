@@ -69,23 +69,8 @@ def getValue(graph, term, values={}, gparam=None):
             if subj is not None and unicode(subj) in values:
                 subj = values[unicode(subj)]
 
-            pred = unicode(graph.value(term, ATTM.predicateSelector).toPython())
-            if pred=="@id" and subj is not None:
-                #
-                # shortcut, just need the @id of the object specified by attm:idSelector
-                #
-                return subj
-            elif pred=="@type":
-                pred = RDF.type
-            elif pred in values:
-                #
-                # assume the value of pred variable maps to an RDF Term
-                #
-                pred = values[pred]
-            
+            pred = graph.value(term, ATTM.predicateSelector)
             obj = graph.value(term, ATTM.objectSelector)
-            if obj is not None and unicode(obj) in values:
-                obj = values[unicode(obj)]
             
             return subj, pred, obj, gparam.triples((subj, pred, obj))
         else:
@@ -141,13 +126,6 @@ def do_map(graph, term, values={}, gparam=None):
         msg = graph.value(term, ATTM.message)
         if msg is not None: print msg
 
-        #
-        # update ID registry
-        #
-        _id = graph.value(term, ATTM.id)
-        if _id is not None:
-            values[_id.toPython()] = subj
-
         if _type is not None and _type == ATTM.Retraction:
             #
             # Retraction only support for single onProperty but can be applied to multiple values
@@ -159,7 +137,7 @@ def do_map(graph, term, values={}, gparam=None):
             continue
 
         for p, o in graph.predicate_objects(term):
-            if p in [ATTM.objectSource, ATTM.objectId, ATTM.comment, ATTM.id]: continue
+            if p in [ATTM.objectSource, ATTM.objectId, ATTM.comment]: continue
 
             if p == ATTM.objectType:
                 gparam.add((subj, RDF.type, o))
@@ -249,10 +227,12 @@ if __name__ == "__main__":
                 #
                 # fetch source's content from url (for now use a native handler)
                 #
+                # TODO: instead of downloading and run a native parser, invoke external service (HTTP POST) and 
+                #       assume to receive a URL in the Location response header
+                #       the URL is assumed to be a hydra API containing the interpreted content (from resource)
                 r = requests.get(tmp[ATTM.resource])
                 tmp["_:handler"] = csv.DictReader(StringIO(r.text))
-                srcmap[tmp[ATTM.id]] = tmp
-                srcmap[tmp[ATTM.contentName].toPython()] = tmp["_:handler"]
+                srcmap[src] = tmp["_:handler"]
 
             reflectMap = {}
             print "--global map"
@@ -267,13 +247,13 @@ if __name__ == "__main__":
             # read content mapping
             #
             for src in g.objects(mapping, ATTM.objectMap):
-                objsrc = g.value(src, ATTM.objectSource).toPython()
+                objsrc = g.value(src, ATTM.objectSource)
                 #
                 # source traversal
                 #
                 for data in srcmap[objsrc]:
                     rdata = remap(objsrc, data)
-                    do_map(g, src, dict(rdata.items()+reflectMap.items()), output)
+                    do_map(g, src, rdata, output)
 
             print "--post processing"
             proc = g.value(mapping, ATTM.postProcess)

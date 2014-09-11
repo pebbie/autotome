@@ -10,9 +10,12 @@
         "attm:resource": {"@type": "@id"},
         "attm:objectId": {"@type": "@id"},
         "attm:objectType": {"@type": "@id"},
+        "attm:objectSource": {"@type": "@id"},
         "attm:valueType": {"@type":"@id"},
         "attm:onProperty": {"@type":"@id"},
         "attm:postProcess": {"@container": "@list"},
+        "attm:predicateSelector": {"@type": "@id"},
+        "attm:objectSelector": {"@type": "@id"},
         "qb:dimension": {"@type":"@id"},
         "qb:measure": {"@type":"@id"},
         "qb:sliceStructure": {"@type":"@id"},
@@ -23,7 +26,7 @@
     "@type":"attm:Mapping",
     "attm:source":[
         {
-            "attm:id": "resource1",
+            "@id": "_:resource1",
             "attm:contentName": "source1",
             "@type": "attm:Source",
             "attm:resource": "http://localhost/tmp/alokasi-anggaran-dan-pencairan-dana-pnpm_7f932ae7-8343-4322-9b15-d8898ab3224c.csv",
@@ -31,13 +34,20 @@
             "mime": "text/csv",
             "attm:handler":{
                 "@type":"attm:ServiceInvoke",
-                "attm:serviceTemplate": "http://localhost/ckanrdf/services/csv-parser?src={resource1:resource}"
+                "attm:serviceTemplate": "http://localhost/ckanrdf/services/csv-parser{?src}",
+                "attm:mapping":[
+                    {
+                        "attm:variable": "src",
+                        "attm:fromId": "_:resource1",
+                        "attm:onProperty": "attm:resource"
+                    }
+                ]
             }
         }
     ],
     "attm:globalMap":[
         {
-            "attm:id": "dataset",
+            "@id": "_:dataset",
             "attm:objectId": "http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm",
             "attm:objectType": "qb:Dataset",
             "dct:title":"Alokasi Anggaran dan Pencairan dana PNPM"
@@ -87,52 +97,46 @@
             "attm:objectId": "oditb:Periode",
             "attm:objectType": "qb:SliceKey",
             "rdfs:label": {"@value": "berdasarkan tahun", "@language":"id"},
+            "qb:sliceStructure": "oditb:Periode",
             "rdfs:comment": {"@value":"Pengelompokkan berdasarkan tahun", "@language":"id"}
         },
         {
-            "attm:id": "slice2007",
             "attm:objectId": "oditb:p2007",
             "attm:objectType": "qb:Slice",
             "qb:sliceStructure": "oditb:Periode",
             "comment": "link to observation is updated during postprocessing"
         },
         {
-            "attm:id": "slice2008",
             "attm:objectId": "oditb:p2008",
             "attm:objectType": "qb:Slice",
             "qb:sliceStructure": "oditb:Periode",
             "comment": "link to observation is updated during postprocessing"
         },
         {
-            "attm:id": "slice2009",
             "attm:objectId": "oditb:p2009",
             "attm:objectType": "qb:Slice",
             "qb:sliceStructure": "oditb:Periode",
             "comment": "link to observation is updated during postprocessing"
         },
         {
-            "attm:id": "slice2010",
             "attm:objectId": "oditb:p2010",
             "attm:objectType": "qb:Slice",
             "qb:sliceStructure": "oditb:Periode",
             "comment": "link to observation is updated during postprocessing"
         },
         {
-            "attm:id": "slice2011",
             "attm:objectId": "oditb:p2011",
             "attm:objectType": "qb:Slice",
             "qb:sliceStructure": "oditb:Periode",
             "comment": "link to observation is updated during postprocessing"
         },
         {
-            "attm:id": "slice2012",
             "attm:objectId": "oditb:p2012",
             "attm:objectType": "qb:Slice",
             "qb:sliceStructure": "oditb:Periode",
             "comment": "link to observation is updated during postprocessing"
         },
         {
-            "attm:id": "slice2013",
             "attm:objectId": "oditb:p2013",
             "attm:objectType": "qb:Slice",
             "qb:sliceStructure": "oditb:Periode",
@@ -141,89 +145,50 @@
     ],
     "attm:objectMap":[
         {
-            "attm:objectSource": "source1",
+            "attm:objectSource": "_:resource1",
             "attm:objectId":{
                 "@type":"attm:ServiceInvoke",
                 "attm:serviceTemplate":"http://localhost/ckanrdf/services/genuri?prefix=http://pebbie.org/opendata/ns/data.ukp.go.id/"
             },
             "attm:objectType":"qb:Observation",
-            "qb:dataSet": {
-                "@type": "attm:OutputReflection",
-                "attm:idSelector":"dataset",
-                "attm:predicateSelector": "@id"
-            },
+            "qb:dataSet": "http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm",
             "oditb:program":{
                 "@type": "attm:ServiceInvoke",
-                "attm:serviceTemplate":"http://localhost/ckanrdf/services/slugification?input={source1:program_pnpm}&prefix=http://pebbie.org/opendata/ns/data.ukp.go.id/"
+                "attm:serviceTemplate":"http://localhost/ckanrdf/services/slugification?input={resource1:program_pnpm}&prefix=http://pebbie.org/opendata/ns/data.ukp.go.id/"
             },
             "oditb:dana_alokasi":{
                 "@type": "attm:ValueMap",
-                "attm:valueTemplate": "{source1:dana_alokasi}",
+                "attm:valueTemplate": "{resource1:dana_alokasi}",
                 "attm:valueType": "xsd:int"
             },
             "oditb:dana_pencairan":{
                 "@type": "attm:ValueMap",
-                "attm:valueTemplate": "{source1:dana_pencairan}",
+                "attm:valueTemplate": "{resource1:dana_pencairan}",
                 "attm:valueType": "xsd:int"
             },
             "oditb:tahun":{
                 "@type": "attm:ValueMap",
-                "attm:valueTemplate": "{source1:tahun}"
+                "attm:valueTemplate": "{resource1:tahun}"
             }
         }
     ],
     "attm:postProcess":[
         {
-            "attm:id": "dataset_property",
-            "attm:objectId": "qb:dataSet",
-            "comment": "bind property to be used in a predicateSelector (not stored in output graph)"
-        },
-        {
-            "attm:id": "slice_class",
-            "attm:objectId": "qb:Slice",
-            "comment": "bind URI to be used in an objectSelector (not stored in output graph)"
-        },
-        {
-            "attm:id": "obs_class",
-            "attm:objectId": "qb:Observation",
-            "comment": "bind URI to be used in an objectSelector (not stored in output graph)"
-        },
-        {
-            "attm:id": "slicekey",
-            "attm:objectId": "qb:SliceKey"
-        },
-        {
-            "attm:objectId": {
-                "@type": "attm:OutputReflection",
-                "attm:predicateSelector": "@type",
-                "attm:objectSelector": "slicekey"
-            },
-            "qb:sliceStructure": "oditb:Periode"
-        },
-        {
-            "attm:objectId":{
-                "@type": "attm:OutputReflection",
-                "attm:idSelector":"dataset",
-                "attm:predicateSelector": "@id"
-            },
+            "attm:objectId":"http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm",
             "qb:slice":{
-                "comment": "select all URI which is linked to this objectId through this property. since the slices is defined manually in the global map, this can also be done manually in the global map definition of dataset",
+                "comment": "select all URI which is linked to this objectId through this property. since the slices is defined manually in the global map, this can also be done manually in the global map definition of _:dataset",
                 "@type": "attm:OutputReflection",
-                "attm:predicateSelector": "@type",
-                "attm:objectSelector": "slice_class"
+                "attm:predicateSelector": "rdf:type",
+                "attm:objectSelector": "qb:Slice"
             }
         },
         {
-            "attm:objectId": {
-                "@type": "attm:OutputReflection",
-                "attm:idSelector":"slice2007",
-                "attm:predicateSelector": "@id"
-            },
+            "attm:objectId": "oditb:p2007",
             "oditb:tahun":"2007",
             "qb:observation":{
                 "@type": "attm:OutputReflection",
-                "attm:predicateSelector": "@type",
-                "attm:objectSelector": "obs_class",
+                "attm:predicateSelector": "rdf:type",
+                "attm:objectSelector": "qb:Observation",
                 "attm:selectionRestriction":[
                     {
                         "attm:onProperty": "oditb:tahun",
@@ -233,16 +198,12 @@
             }
         },
         {
-            "attm:objectId": {
-                "@type": "attm:OutputReflection",
-                "attm:idSelector":"slice2008",
-                "attm:predicateSelector": "@id"
-            },
+            "attm:objectId": "oditb:p2008",
             "oditb:tahun":"2008",
             "qb:observation":{
                 "@type": "attm:OutputReflection",
-                "attm:predicateSelector": "@type",
-                "attm:objectSelector": "obs_class",
+                "attm:predicateSelector": "rdf:type",
+                "attm:objectSelector": "qb:Observation",
                 "attm:selectionRestriction":[
                     {
                         "attm:onProperty": "oditb:tahun",
@@ -252,16 +213,12 @@
             }
         },
         {
-            "attm:objectId": {
-                "@type": "attm:OutputReflection",
-                "attm:idSelector":"slice2009",
-                "attm:predicateSelector": "@id"
-            },
+            "attm:objectId": "oditb:p2009",
             "oditb:tahun":"2009",
             "qb:observation":{
                 "@type": "attm:OutputReflection",
-                "attm:predicateSelector": "@type",
-                "attm:objectSelector": "obs_class",
+                "attm:predicateSelector": "rdf:type",
+                "attm:objectSelector": "qb:Observation",
                 "attm:selectionRestriction":[
                     {
                         "attm:onProperty": "oditb:tahun",
@@ -271,16 +228,12 @@
             }
         },
         {
-            "attm:objectId": {
-                "@type": "attm:OutputReflection",
-                "attm:idSelector":"slice2010",
-                "attm:predicateSelector": "@id"
-            },
+            "attm:objectId": "oditb:p2010",
             "oditb:tahun":"2010",
             "qb:observation":{
                 "@type": "attm:OutputReflection",
-                "attm:predicateSelector": "@type",
-                "attm:objectSelector": "obs_class",
+                "attm:predicateSelector": "rdf:type",
+                "attm:objectSelector": "qb:Observation",
                 "attm:selectionRestriction":[
                     {
                         "attm:onProperty": "oditb:tahun",
@@ -290,16 +243,12 @@
             }
         },
         {
-            "attm:objectId": {
-                "@type": "attm:OutputReflection",
-                "attm:idSelector":"slice2011",
-                "attm:predicateSelector": "@id"
-            },
+            "attm:objectId": "oditb:p2011",
             "oditb:tahun":"2011",
             "qb:observation":{
                 "@type": "attm:OutputReflection",
-                "attm:predicateSelector": "@type",
-                "attm:objectSelector": "obs_class",
+                "attm:predicateSelector": "rdf:type",
+                "attm:objectSelector": "qb:Observation",
                 "attm:selectionRestriction":[
                     {
                         "attm:onProperty": "oditb:tahun",
@@ -309,16 +258,12 @@
             }
         },
         {
-            "attm:objectId": {
-                "@type": "attm:OutputReflection",
-                "attm:idSelector":"slice2012",
-                "attm:predicateSelector": "@id"
-            },
+            "attm:objectId": "oditb:p2012",
             "oditb:tahun":"2012",
             "qb:observation":{
                 "@type": "attm:OutputReflection",
-                "attm:predicateSelector": "@type",
-                "attm:objectSelector": "obs_class",
+                "attm:predicateSelector": "rdf:type",
+                "attm:objectSelector": "qb:Observation",
                 "attm:selectionRestriction":[
                     {
                         "attm:onProperty": "oditb:tahun",
@@ -328,16 +273,12 @@
             }
         },
         {
-            "attm:objectId": {
-                "@type": "attm:OutputReflection",
-                "attm:idSelector":"slice2013",
-                "attm:predicateSelector": "@id"
-            },
+            "attm:objectId": "oditb:p2013",
             "oditb:tahun":"2013",
             "qb:observation":{
                 "@type": "attm:OutputReflection",
-                "attm:predicateSelector": "@type",
-                "attm:objectSelector": "obs_class",
+                "attm:predicateSelector": "rdf:type",
+                "attm:objectSelector": "qb:Observation",
                 "attm:selectionRestriction":[
                     {
                         "attm:onProperty": "oditb:tahun",
@@ -350,8 +291,8 @@
             "@type": "attm:Retraction",
             "attm:objectId": {
                 "@type": "attm:OutputReflection",
-                "attm:predicateSelector": "@type",
-                "attm:objectSelector": "obs_class"
+                "attm:predicateSelector": "rdf:type",
+                "attm:objectSelector": "qb:Observation"
             },
             "attm:onProperty": "oditb:tahun"
         }
