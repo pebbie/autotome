@@ -1,6 +1,6 @@
 # CSV2QB
 
-sample test case to convert CSV into [http://www.w3.org/TR/vocab-data-cube/](Cube) Model
+sample test case to convert CSV into [Cube](http://www.w3.org/TR/vocab-data-cube/) Model
 
 the mapping description is in the .jsonld file. the vocabulary for mapping is ad-hoc and is written in the context
 
@@ -11,9 +11,9 @@ the mapping has three parts :
 - post processing : ordered process to transform on generated triples from previous process (global and content map)
 
 current implementation of the mapping only reads the file from local file and reading the source via native csv DictReader.
-the python uses [https://github.com/RDFLib/rdflib](rdflib) and [https://github.com/RDFLib/rdflib-jsonld](rdflib-jsonld).
+the python uses [rdflib](https://github.com/RDFLib/rdflib) and [rdflib-jsonld](https://github.com/RDFLib/rdflib-jsonld).
 
-these code below is the implementation of external service that is written in the [https://github.com/pebbie/botol](botol) microframework. 
+these code below is the implementation of external service that is written in the [botol](https://github.com/pebbie/botol) microframework. 
 
 the namespace for the properties is http://pebbie.org/ont/autotome/ (not yet dereference-able)
 
@@ -33,5 +33,5 @@ route('/services/genuri', function($arg){
 ```
 
 ## Related works
-- [http://www.w3.org/TR/r2rml/](R2RML)
-- [http://www.w3.org/2013/csvw/wiki/CSV-LD](CSV-LD) - [https://github.com/gkellogg/csv-ld](github)
+- [R2RML](http://www.w3.org/TR/r2rml/)
+- [CSV-LD](http://www.w3.org/2013/csvw/wiki/CSV-LD) - [github](https://github.com/gkellogg/csv-ld)
