@@ -197,15 +197,13 @@ def remap(prefix, mapping, delimiter="_"):
     return tmp
 
 if __name__ == "__main__":
-    fn = "alokasi-anggaran-dan-pencairan-dana-pnpm.jsonld"
+    fn = "http://localhost/tmp/alokasi-anggaran-dan-pencairan-dana-pnpm.jsonld"
 
     start = time.time()
     #
     # load mapping description (from local file) into RDF graph object
     #
-    with open(fn) as f:
-        data = f.read()
-    g = Graph().parse(data=data, format="json-ld")
+    g = Graph().parse(fn, format="json-ld")
 
     #
     # look for object of type attm:Mapping
