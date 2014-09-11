@@ -1,0 +1,321 @@
+@prefix ns1: <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-data-pnpm/> .
+@prefix ns2: <http://purl.org/linked-data/cube#> .
+@prefix ns3: <http://purl.org/dc/terms/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns1:dsd a ns2:DataStructureDefinition ;
+    ns2:component [ ns2:dimension ns1:tahun ;
+            ns2:order 1 ],
+        [ ns2:measure ns1:dana_pencairan ],
+        [ ns2:measure ns1:dana_alokasi ],
+        [ ns2:dimension ns1:program ;
+            ns2:order 2 ] ;
+    ns2:sliceKey ns1:Periode .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c8650b298> a ns2:Observation ;
+    ns1:dana_alokasi "1.946e+12"^^xsd:int ;
+    ns1:dana_pencairan "1.110e+11"^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-perkotaan> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c865448d7> a ns2:Observation ;
+    ns1:dana_alokasi "1.957e+12"^^xsd:int ;
+    ns1:dana_pencairan "1.507e+12"^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-perdesaan> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c8658147c> a ns2:Observation ;
+    ns1:dana_alokasi "1.188e+11"^^xsd:int ;
+    ns1:dana_pencairan ""^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-daerah-tertinggal-dan-khusus> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c865c253c> a ns2:Observation ;
+    ns1:dana_alokasi "0"^^xsd:int ;
+    ns1:dana_pencairan ""^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-infrastruktur-perdesaan> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c8660a1f2> a ns2:Observation ;
+    ns1:dana_alokasi "0"^^xsd:int ;
+    ns1:dana_pencairan ""^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-infrastruktur-sosial-ekonomi-wilayah> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86643be6> a ns2:Observation ;
+    ns1:dana_alokasi "1.842e+12"^^xsd:int ;
+    ns1:dana_pencairan "5.824e+11"^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-perkotaan> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c8669ee9c> a ns2:Observation ;
+    ns1:dana_alokasi "3.621e+12"^^xsd:int ;
+    ns1:dana_pencairan "3.464e+12"^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-perdesaan> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c866dc4dc> a ns2:Observation ;
+    ns1:dana_alokasi "2.348e+11"^^xsd:int ;
+    ns1:dana_pencairan "5.435e+10"^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-daerah-tertinggal-dan-khusus> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c867242d3> a ns2:Observation ;
+    ns1:dana_alokasi "4.060e+11"^^xsd:int ;
+    ns1:dana_pencairan ""^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-infrastruktur-perdesaan> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86769a3b> a ns2:Observation ;
+    ns1:dana_alokasi "1.620e+11"^^xsd:int ;
+    ns1:dana_pencairan ""^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-infrastruktur-sosial-ekonomi-wilayah> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c867bb0ed> a ns2:Observation ;
+    ns1:dana_alokasi "1.850e+12"^^xsd:int ;
+    ns1:dana_pencairan "8.155e+11"^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-perkotaan> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86802c87> a ns2:Observation ;
+    ns1:dana_alokasi "6.479e+12"^^xsd:int ;
+    ns1:dana_pencairan "5.541e+12"^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-perdesaan> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c8683e986> a ns2:Observation ;
+    ns1:dana_alokasi "1.198e+11"^^xsd:int ;
+    ns1:dana_pencairan "2.351e+10"^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-daerah-tertinggal-dan-khusus> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86892145> a ns2:Observation ;
+    ns1:dana_alokasi "8.000e+11"^^xsd:int ;
+    ns1:dana_pencairan ""^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-infrastruktur-perdesaan> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c868d001a> a ns2:Observation ;
+    ns1:dana_alokasi "3.555e+11"^^xsd:int ;
+    ns1:dana_pencairan "4.185e+11"^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-infrastruktur-sosial-ekonomi-wilayah> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c869179bd> a ns2:Observation ;
+    ns1:dana_alokasi "1.356e+12"^^xsd:int ;
+    ns1:dana_pencairan "1.062e+12"^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-perkotaan> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86953d03> a ns2:Observation ;
+    ns1:dana_alokasi "9.694e+12"^^xsd:int ;
+    ns1:dana_pencairan "7.588e+12"^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-perdesaan> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c869a181c> a ns2:Observation ;
+    ns1:dana_alokasi "1.138e+10"^^xsd:int ;
+    ns1:dana_pencairan ""^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-daerah-tertinggal-dan-khusus> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c869e019d> a ns2:Observation ;
+    ns1:dana_alokasi "4.170e+11"^^xsd:int ;
+    ns1:dana_pencairan ""^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-infrastruktur-perdesaan> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86a2b4b1> a ns2:Observation ;
+    ns1:dana_alokasi "3.555e+11"^^xsd:int ;
+    ns1:dana_pencairan "1.708e+11"^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-infrastruktur-sosial-ekonomi-wilayah> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86a81250> a ns2:Observation ;
+    ns1:dana_alokasi "1.219e+12"^^xsd:int ;
+    ns1:dana_pencairan "9.622e+11"^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-perkotaan> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86ac2091> a ns2:Observation ;
+    ns1:dana_alokasi "8.245e+12"^^xsd:int ;
+    ns1:dana_pencairan "1.528e+13"^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-perdesaan> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86b0bfe1> a ns2:Observation ;
+    ns1:dana_alokasi "2.450e+10"^^xsd:int ;
+    ns1:dana_pencairan ""^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-daerah-tertinggal-dan-khusus> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86b4b96c> a ns2:Observation ;
+    ns1:dana_alokasi "4.704e+11"^^xsd:int ;
+    ns1:dana_pencairan "3.233e+11"^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-infrastruktur-perdesaan> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86ba4a3d> a ns2:Observation ;
+    ns1:dana_alokasi "3.555e+11"^^xsd:int ;
+    ns1:dana_pencairan "3.555e+11"^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-infrastruktur-sosial-ekonomi-wilayah> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86be7069> a ns2:Observation ;
+    ns1:dana_alokasi "1.415e+12"^^xsd:int ;
+    ns1:dana_pencairan "8.334e+11"^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-perkotaan> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86c30ed3> a ns2:Observation ;
+    ns1:dana_alokasi "8.025e+12"^^xsd:int ;
+    ns1:dana_pencairan "7.038e+12"^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-perdesaan> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86c801fa> a ns2:Observation ;
+    ns1:dana_alokasi "0"^^xsd:int ;
+    ns1:dana_pencairan ""^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-daerah-tertinggal-dan-khusus> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86cc2938> a ns2:Observation ;
+    ns1:dana_alokasi "1.450e+11"^^xsd:int ;
+    ns1:dana_pencairan "4.600e+10"^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-infrastruktur-perdesaan> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86d0eacb> a ns2:Observation ;
+    ns1:dana_alokasi "3.555e+11"^^xsd:int ;
+    ns1:dana_pencairan "4.235e+11"^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-infrastruktur-sosial-ekonomi-wilayah> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86d4d097> a ns2:Observation ;
+    ns1:dana_alokasi "1.391e+12"^^xsd:int ;
+    ns1:dana_pencairan ""^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-perkotaan> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86d9b05c> a ns2:Observation ;
+    ns1:dana_alokasi "7.812e+12"^^xsd:int ;
+    ns1:dana_pencairan ""^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-perdesaan> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86ddc7ff> a ns2:Observation ;
+    ns1:dana_alokasi "0"^^xsd:int ;
+    ns1:dana_pencairan ""^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-daerah-tertinggal-dan-khusus> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86e26f60> a ns2:Observation ;
+    ns1:dana_alokasi "1.445e+11"^^xsd:int ;
+    ns1:dana_pencairan ""^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-infrastruktur-perdesaan> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86e6842b> a ns2:Observation ;
+    ns1:dana_alokasi "3.555e+11"^^xsd:int ;
+    ns1:dana_pencairan ""^^xsd:int ;
+    ns1:program <http://pebbie.org/opendata/ns/data.ukp.go.id/pnpm-infrastruktur-sosial-ekonomi-wilayah> ;
+    ns2:dataSet <http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> .
+
+ns1:dana_alokasi a ns2:MeasureProperty,
+        rdf:Property ;
+    rdfs:label "Dana Alokasi"@id .
+
+ns1:dana_pencairan a ns2:MeasureProperty,
+        rdf:Property ;
+    rdfs:label "Dana Pencairan"@id .
+
+ns1:p2007 a ns2:Slice ;
+    ns1:tahun "2007" ;
+    ns2:observation <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c8650b298>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c865448d7>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c8658147c>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c865c253c>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c8660a1f2> ;
+    ns2:sliceStructure ns1:Periode .
+
+ns1:p2008 a ns2:Slice ;
+    ns1:tahun "2008" ;
+    ns2:observation <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86643be6>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c8669ee9c>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c866dc4dc>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c867242d3>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86769a3b> ;
+    ns2:sliceStructure ns1:Periode .
+
+ns1:p2009 a ns2:Slice ;
+    ns1:tahun "2009" ;
+    ns2:observation <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c867bb0ed>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86802c87>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c8683e986>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86892145>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c868d001a> ;
+    ns2:sliceStructure ns1:Periode .
+
+ns1:p2010 a ns2:Slice ;
+    ns1:tahun "2010" ;
+    ns2:observation <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c869179bd>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86953d03>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c869a181c>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c869e019d>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86a2b4b1> ;
+    ns2:sliceStructure ns1:Periode .
+
+ns1:p2011 a ns2:Slice ;
+    ns1:tahun "2011" ;
+    ns2:observation <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86a81250>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86ac2091>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86b0bfe1>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86b4b96c>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86ba4a3d> ;
+    ns2:sliceStructure ns1:Periode .
+
+ns1:p2012 a ns2:Slice ;
+    ns1:tahun "2012" ;
+    ns2:observation <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86be7069>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86c30ed3>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86c801fa>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86cc2938>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86d0eacb> ;
+    ns2:sliceStructure ns1:Periode .
+
+ns1:p2013 a ns2:Slice ;
+    ns1:tahun "2013" ;
+    ns2:observation <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86d4d097>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86d9b05c>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86ddc7ff>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86e26f60>,
+        <http://pebbie.org/opendata/ns/data.ukp.go.id/5410c86e6842b> ;
+    ns2:sliceStructure ns1:Periode .
+
+ns1:program a ns2:DimensionProperty,
+        rdf:Property ;
+    rdfs:label "Program"@id .
+
+ns1:tahun a ns2:DimensionProperty,
+        rdf:Property ;
+    rdfs:label "Tahun"@id .
+
+ns1:Periode a ns2:SliceKey ;
+    rdfs:label "berdasarkan tahun"@id ;
+    ns2:sliceStructure ns1:Periode ;
+    rdfs:comment "Pengelompokkan berdasarkan tahun"@id .
+
+<http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm> a ns2:Dataset ;
+    ns3:title "Alokasi Anggaran dan Pencairan dana PNPM" ;
+    ns2:slice ns1:p2007,
+        ns1:p2008,
+        ns1:p2009,
+        ns1:p2010,
+        ns1:p2011,
+        ns1:p2012,
+        ns1:p2013 .
+
