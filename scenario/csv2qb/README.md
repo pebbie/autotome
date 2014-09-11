@@ -12,11 +12,11 @@ the mapping has three parts :
 
 current implementation of the mapping only reads the file from local file and reading the source via native csv DictReader.
 
-these code below is the implementation of external service that is written in the [https://github.com/pebbie/botol botol] microframework. 
+these code below is the implementation of external service that is written in the [https://github.com/pebbie/botol](botol) microframework. 
 
 the namespace for the properties is http://pebbie.org/ont/autotome/ (not yet dereference-able)
 
-'''
+```php
 //simple service to convert string into a slug (replace whitespace with dash and transform to lowercase)
 route('/services/slugification', function($arg){
     $tmp = $_GET["input"];
@@ -29,5 +29,4 @@ route('/services/genuri', function($arg){
     $prefix = isset($_GET["prefix"])?$_GET["prefix"]:"";
     echo uniqid($prefix);
 });
-
-'''
+```
