@@ -19,6 +19,7 @@ the namespace for the properties is http://pebbie.org/ont/autotome/ (not yet der
 
 ```php
 //simple service to convert string into a slug (replace whitespace with dash and transform to lowercase)
+//sample URITemplate http://localhost/rdf/services/slugification{?input,prefix}
 route('/services/slugification', function($arg){
     $tmp = $_GET["input"];
     $prefix = isset($_GET["prefix"])?$_GET["prefix"]:"";
@@ -26,6 +27,7 @@ route('/services/slugification', function($arg){
 });
 
 //simple web service to generate unique string
+//sample URITemplate http://localhost/rdf/services/genuri{?input,prefix}
 route('/services/genuri', function($arg){
     $prefix = isset($_GET["prefix"])?$_GET["prefix"]:"";
     echo uniqid($prefix);
