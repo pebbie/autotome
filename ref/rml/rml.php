@@ -334,16 +334,46 @@ route("/rml/:path", function($arg){
                 {
                     $tmp = array();
                     $mapping = array();
+                    $multi = false;
+                    $keys = array();
                     foreach($depmap[0] as $kk => $depkey)
                     {
+                        $keys[] = $depkey;
                         $val = $format_reader->lookup($depkey, $obj);
                         if(is_array($val))
-                            $val = $val[0];
-                        $mapping[$depkey] = "".$val;
+                            if(count($val)==1)
+                                $val = "".$val[0];
+                            else
+                                $multi = true;
+                        
+                        //if(is_array($val))
+                        //    $val = $val[0];
+                        //$mapping[$depkey] = "".$val;
+                        $mapping[$depkey] = $val;
                     }
-                    $tmp[] = $mapping;
-                    $tmp[] = $url;
-                    $lookup[$mapuri][$depmap[1]][] = $tmp;
+                    if($multi){
+                        //print_r($mapping);
+                        $firstkey = $keys[0];
+                        //echo $firstkey, "\n";
+                        foreach($mapping[$firstkey] as $ik => $iv)
+                        {
+                            $tmap = array();
+                            foreach($depmap[0] as $kk => $depkey)
+                            {
+                                $tmap[$depkey] = $mapping[$depkey][$ik];
+                            }
+                            $tmp = array();
+                            $tmp[] = $tmap;
+                            $tmp[] = $url;
+                            //print_r($tmp);
+                            $lookup[$mapuri][$depmap[1]][] = $tmp;
+                        }
+                    }
+                    else{
+                        $tmp[] = $mapping;
+                        $tmp[] = $url;
+                        $lookup[$mapuri][$depmap[1]][] = $tmp;
+                    }
                 }
             }
 
@@ -478,7 +508,7 @@ route("/rml/:path", function($arg){
                 
             }
         }
-        #if(array_key_exists($mapuri, $lookup)) print_r($lookup[$mapuri]);
+        //if(array_key_exists($mapuri, $lookup)) print_r($lookup[$mapuri]);
     }
     $format = EasyRdf_Format::getFormat("n3");
     $output = $output->serialise($format);
