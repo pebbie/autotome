@@ -9,6 +9,7 @@ dependencies: jsonpath_rw, lxml, requests
 from rdflib import Graph, plugin, Namespace, BNode, URIRef, Literal
 from rdflib.namespace import RDF, RDFS, OWL
 #import requests
+import sys
 import csv
 import json
 import re
@@ -46,12 +47,29 @@ def iterate(obj, iterator, qlang):
             yield o
 
 def lookup(obj, ref, qlang):
-    if qlang==QL.XPath:
-        out = obj.xpath(ref)[0]
-        if isinstance(out, etree._Element):
-            return out.text
+    def itemval(e):
+        if isinstance(e, etree._Element):
+            return e.text
         else:
-            return out
+            return e
+
+    if qlang==QL.XPath:
+        if isinstance(ref, tuple):
+            lval = []
+            for iref in list(ref):
+                out = obj.xpath(iref)
+                if isinstance(out, list):
+                    out = [itemval(e) for e in out]
+                else:
+                    out = itemval(out)
+                lval.append(out)
+            return tuple(lval)
+        else:
+            out = obj.xpath(ref)
+            if isinstance(out, list):
+                return [itemval(e) for e in out]
+            else:
+                return itemvalue(out)
     elif qlang==QL.JSONPath:
         out = [o.value for o in parse(ref).find(obj)]
         return out
@@ -72,7 +90,8 @@ def process_template(obj, template, qlang, isuri=False):
 
 if __name__ == "__main__":
     # RML Processor example
-    fn = "rml\\example3\\example3.rml.ttl"
+    fn = "rml\\example2\\example.rml.ttl"
+    #fn = "rml\\example3\\example3.rml.ttl"
     #fn = "rml\\example4\\example4_Venue.rml.ttl"
     #fn = "rml\\example5\\museum-model.rml.ttl"
     #fn = "rml\\example6\\example.rml.ttl"
@@ -148,9 +167,10 @@ if __name__ == "__main__":
             print "--source desc.", repr(mapping)
             source = g.value(mapping, RML.logicalSource)
 
+            r = file(g.value(source, RML.sourceName))
             ql = g.value(source, RML.queryLanguage)
             pm = matcher[ql]
-            print ql
+            #print ql
             if ql==QL.CSV:
                 src = csv.DictReader(r)
             elif ql==QL.XPath:
@@ -193,6 +213,9 @@ if __name__ == "__main__":
                                 for l in lval:
                                     rval = quote(l)
                                     join_lookup[mapping][child][rval] = subj
+                            elif isinstance(lval, tuple):
+                                rval = repr(lval)
+                                join_lookup[mapping][child][rval] = subj
                             else:
                                 rval = quote(lval)
                                 join_lookup[mapping][child][rval] = subj
@@ -210,12 +233,16 @@ if __name__ == "__main__":
                         if obj is not None and (subj, pred, obj) not in output:
                             output.add((subj, pred, obj))
 
+                        const = g.value(omap, RR.constant)
                         ttype = g.value(omap, RR.termType)
                         tlang = g.value(omap, RR.language)
                         dtype = g.value(omap, RR.datatype)
 
                         ovalue = None
-                        if (omap, RML.reference, None) in g:
+                        if (omap, RR.constant, None) in g:
+                            objref = g.value(omap, RR.constant)
+                            ovalue = objref
+                        elif (omap, RML.reference, None) in g:
                             objref = g.value(omap, RML.reference)
                             ovalue = lookup(iobj, objref, ql)
                         elif (omap, RR.template, None) in g:
@@ -223,11 +250,18 @@ if __name__ == "__main__":
                         elif (omap, RR.parentTriplesMap, None) in g:
                             ttype = RR.IRI
                             parent = g.value(omap, RR.parentTriplesMap)
-                            pref = g.value(g.value(omap, RR.joinCondition), RR.parent)
+                            #pref = g.value(g.value(omap, RR.joinCondition), RR.parent)
 
                             #ovalue = join_lookup[parent][mapping][pref]
-                            cval = lookup(iobj, g.value(g.value(omap, RR.joinCondition), RR.child), ql)
-                            if isinstance(cval, list):
+                            jc = [g.value(jc, RR.child) for jc in g.objects(omap, RR.joinCondition)]
+                            if len(jc)==1:
+                                jc = jc[0]
+                            else:
+                                jc = tuple(jc)
+                            cval = lookup(iobj, jc, ql)
+                            if isinstance(cval, tuple):
+                                ovalue = join_lookup[parent][mapping][repr(cval)]
+                            elif isinstance(cval, list):
                                 ovalue = []
                                 for item in cval:
                                     # item may not exists in parent
@@ -235,7 +269,7 @@ if __name__ == "__main__":
                                     if qitem in join_lookup[parent][mapping]:
                                         ovalue.append(join_lookup[parent][mapping][qitem])
                             else:
-                                ovalue = join_lookup[parent][mapping][quote(cval)]
+                                ovalue = join_lookup[parent][mapping][cval]
                         
                         if ovalue is None: continue
 
