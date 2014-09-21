@@ -1,7 +1,7 @@
 implementation of RML Processor for mapping multiple source multiple format using RML
 + Python
-+ PHP, sample in http://pebbie.org/ckanrdf/rml/<file>
-  available option for <file>:
++ PHP, sample in http://pebbie.org/ckanrdf/rml/{file}
+  available option for `file`:
   - example
   - example2
   - example3
