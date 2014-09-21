@@ -175,11 +175,52 @@ class XmlSource extends RmlSource
     }
 }
 
+class BibtexSource extends RmlSource
+{
+    private $bib;
+    private $obj;
+    private $json;
+
+    public function __construct()
+    {
+        $this->bib = new Structures_BibTex();
+        $this->json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
+    }
+
+    public function open($location)
+    {
+        $this->bib->loadFile($location);
+        $this->bib->parse();
+    }
+
+    public function iterate($iterator, $ref=null)
+    {
+        $tmp = jsonPath($this->json->decode($this->json->encode($this->bib->data)), $iterator);
+        if($tmp==false)
+            return $this->bib->data;
+        else
+            return $tmp;
+    }
+
+    public function lookup($reference, $ref=null)
+    {
+        if ($ref==null || $ref===false)
+            return jsonPath($this->bib->data, $reference);
+        else
+            return jsonPath($ref, $reference);
+        /*
+        if(array_key_exists($reference, $ref))
+            return $ref[$reference];
+        else return null;
+        */
+    }
+}
+
 route("/rml/:path", function($arg){
     //header("Content-type: text/json");
     //header("Content-type: text/turtle");
     header("Content-type: text/plain");
-    $mapper = array('JSONPath'=>'JsonSource', 'CSV'=>'CSVSource', 'XPath'=>'XmlSource');
+    $mapper = array('JSONPath'=>'JsonSource', 'CSV'=>'CSVSource', 'XPath'=>'XmlSource', 'Bibtex'=>'BibtexSource');
     $src_path = "tmp/";
     $rml_file = $src_path.$arg["path"].".rml.ttl";
     #echo file_exists($rml_file);
@@ -196,6 +237,9 @@ route("/rml/:path", function($arg){
     $graph->parse(file_get_contents($rml_file), "turtle");
     $dependency = array();
     $mapping = array();
+
+    
+    //echo $graph->serialise(EasyRdf_Format::getFormat("n3"));
 
     foreach($graph->resourcesMatching(_exp("rml:logicalSource")) as $key => $TripleMap)
     {
@@ -237,6 +281,7 @@ route("/rml/:path", function($arg){
     $lookup = array();
     foreach($adepth as $mapuri => $depth)
     {
+        echo $mapuri;
         if(array_key_exists($mapuri, $dependency))
         {
             $lookup[$mapuri] = array();
@@ -251,7 +296,7 @@ route("/rml/:path", function($arg){
         $sourceName = $ls->get("rml:sourceName");
         $ql = $ls->get("rml:queryLanguage");
         $iterator = $ls->get("rml:iterator");
-        //echo $sourceName, " ", $iterator," ", $ql->localName(), "\n";
+        echo $sourceName, " ", $iterator," ", $ql->localName(), "\n";
         $format_reader = new $mapper[$ql->localName()]();
         if(substr( $sourceName, 0, 4 ) === "http")
             $format_reader->open($sourceName);
@@ -267,6 +312,7 @@ route("/rml/:path", function($arg){
         $vars = extract_vars($template);
         foreach($format_reader->iterate($iterator) as $k => $obj)
         {
+            print_r($obj);
             if($template){
                 $url = $template;
                 foreach($vars as $k => $var){
@@ -322,7 +368,7 @@ route("/rml/:path", function($arg){
                 
                 if($otpl)
                 {
-                    //echo "tpl:", $otpl, " ";
+                    echo "tpl:", $otpl, " ";
                     $tvars = extract_vars($otpl);
                     $tmp = $otpl;
                     foreach($tvars as $k => $var){
@@ -336,7 +382,8 @@ route("/rml/:path", function($arg){
                 
                 if($oref)
                 {
-                    //echo "ref:", $oref, " ";
+                    #echo "ref:", $oref, " ";
+                    $oref = $oref->getValue();
                     $val = $format_reader->lookup($oref, $obj);
                     $ovalue = array();
                     if(is_array($val)){
@@ -436,6 +483,20 @@ route("/rml/:path", function($arg){
     $format = EasyRdf_Format::getFormat("n3");
     $output = $output->serialise($format);
     echo $output;
+});
+
+route('/test/rmlbibtex', function($arg){
+    header("content-type: text/plain");
+    $bib = new Structures_BibTex();
+    $bib->loadFile("tmp/citations.bib");
+    $bib->parse();
+    print_r($bib->data);
+    $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
+    $tmp = $json->encode($bib->data);
+    $jdata = $json->decode($tmp);
+    echo "--";
+    //print_r(jsonPath($bib->data, "$.author"));
+    print_r(jsonPath($jdata, "$..author[*]"));
 });
 
 ?>

@@ -6,6 +6,7 @@ implementation of RML Processor for mapping multiple source multiple format usin
   - example2
   - example3
   - museum-model
+  - bib (bibtex source)
 
 
 see
