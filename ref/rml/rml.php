@@ -281,7 +281,7 @@ route("/rml/:path", function($arg){
     $lookup = array();
     foreach($adepth as $mapuri => $depth)
     {
-        echo $mapuri;
+        //echo $mapuri;
         if(array_key_exists($mapuri, $dependency))
         {
             $lookup[$mapuri] = array();
@@ -296,7 +296,7 @@ route("/rml/:path", function($arg){
         $sourceName = $ls->get("rml:sourceName");
         $ql = $ls->get("rml:queryLanguage");
         $iterator = $ls->get("rml:iterator");
-        echo $sourceName, " ", $iterator," ", $ql->localName(), "\n";
+        //echo $sourceName, " ", $iterator," ", $ql->localName(), "\n";
         $format_reader = new $mapper[$ql->localName()]();
         if(substr( $sourceName, 0, 4 ) === "http")
             $format_reader->open($sourceName);
@@ -312,7 +312,7 @@ route("/rml/:path", function($arg){
         $vars = extract_vars($template);
         foreach($format_reader->iterate($iterator) as $k => $obj)
         {
-            print_r($obj);
+            //print_r($obj);
             if($template){
                 $url = $template;
                 foreach($vars as $k => $var){
@@ -368,7 +368,7 @@ route("/rml/:path", function($arg){
                 
                 if($otpl)
                 {
-                    echo "tpl:", $otpl, " ";
+                    //echo "tpl:", $otpl, " ";
                     $tvars = extract_vars($otpl);
                     $tmp = $otpl;
                     foreach($tvars as $k => $var){
