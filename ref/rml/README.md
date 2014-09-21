@@ -1,4 +1,12 @@
-Python implementation of RML Processor for mapping multiple source multiple format using RML
+implementation of RML Processor for mapping multiple source multiple format using RML
++ Python
++ PHP, sample in http://pebbie.org/ckanrdf/rml/<file>
+  available option for <file>:
+  - example
+  - example2
+  - example3
+  - museum-model
+
 
 see
 + [Original RML Processor implementation in JAVA](https://github.com/mmlab/RMLProcessor)
