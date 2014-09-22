@@ -20,6 +20,7 @@
         "qb:measure": {"@type":"@id"},
         "qb:sliceStructure": {"@type":"@id"},
         "qb:sliceKey": {"@type":"@id"},
+        "structure": {"@id":"qb:structure", "@type":"@id"},
         "oditb": "http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-data-pnpm/",
         "comment": "attm:comment"
     },
@@ -50,6 +51,7 @@
             "@id": "_:dataset",
             "attm:objectId": "http://pebbie.org/opendata/ns/data.ukp.go.id/alokasi-anggaran-dan-pencairan-dana-pnpm",
             "attm:objectType": "qb:Dataset",
+            "structure": "oditb:dsd",
             "dct:title":"Alokasi Anggaran dan Pencairan dana PNPM"
         },
         {
