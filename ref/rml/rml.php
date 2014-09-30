@@ -4,6 +4,10 @@
  * dependency : 
  * + EasyRdf
  * + jsonpath
+ * + [Spreadsheet-Reader](https://github.com/nuovo/spreadsheet-reader)
+
+ * Notes :
+ * for spreadsheet there is a small fix, see my comment in https://github.com/nuovo/spreadsheet-reader/issues/69
  */
 
 function _exp($s)
@@ -216,11 +220,65 @@ class BibtexSource extends RmlSource
     }
 }
 
+class SpreadsheetSource extends RmlSource
+{
+    private $reader;
+    private $sheets;
+    private $header;
+
+    public function __construct()
+    {
+    }
+
+    public function __destruct()
+    {
+    }
+
+    public function open($location)
+    {
+        $this->reader = new SpreadsheetReader($location);
+        $this->sheets = $this->reader->Sheets();
+    }
+
+    public function iterate($iterator, $ref=null)
+    {
+        if(strlen($iterator)>0)
+            $this->reader->ChangeSheet(array_search($iterator, $this->sheets));
+        
+        $this->header = $this->reader->current();
+        $this->reader->next();
+        foreach($this->header as $idx => $head)
+        {
+            $this->header[$idx] = str_replace(" ", "_", $head);
+        }
+
+        $tmp = array();
+        foreach($this->reader as $row)
+        {
+            #print_r($row);
+            $tmp[] = array_combine($this->header, $row);
+        }
+        //$this->row = $row;
+        //return array();
+        return $tmp;
+    }
+
+    public function lookup($reference, $ref)
+    {
+        $rr = str_replace(" ", "_", $reference);
+        #print_r($ref);
+        #echo $rr, $ref[$rr], array_key_exists($rr, $ref), "\n";
+        if(array_key_exists($rr, $ref))
+            return $ref[$rr];
+        else return null;
+    }
+}
+
 route("/rml/:path", function($arg){
     //header("Content-type: text/json");
     //header("Content-type: text/turtle");
     header("Content-type: text/plain");
-    $mapper = array('JSONPath'=>'JsonSource', 'CSV'=>'CSVSource', 'XPath'=>'XmlSource', 'Bibtex'=>'BibtexSource');
+    $mapper = array('JSONPath'=>'JsonSource', 'CSV'=>'CSVSource', 'XPath'=>'XmlSource', 'Bibtex'=>'BibtexSource', 'Spreadsheet'=>'SpreadsheetSource');
     $src_path = "tmp/";
     $rml_file = $src_path.$arg["path"].".rml.ttl";
     #echo file_exists($rml_file);
@@ -281,7 +339,7 @@ route("/rml/:path", function($arg){
     $lookup = array();
     foreach($adepth as $mapuri => $depth)
     {
-        //echo $mapuri;
+        #echo $mapuri, "\n";
         if(array_key_exists($mapuri, $dependency))
         {
             $lookup[$mapuri] = array();
@@ -303,16 +361,31 @@ route("/rml/:path", function($arg){
         else
             $format_reader->open($src_path.$sourceName);
 
+        $_subj = $map->get("rr:subject");
+        $_pred = $map->all("rr:predicate");
+
         $smap = $map->get("rr:subjectMap");
         $pomap = $map->all("rr:predicateObjectMap");
 
-        $template = $smap->get("rr:template");
-        $class = $smap->get("rr:class");
-        
-        $vars = extract_vars($template);
-        foreach($format_reader->iterate($iterator) as $k => $obj)
+        if($_subj)
         {
-            //print_r($obj);
+            $collection = array($_subj);
+            $template = null;
+            $class = null;
+            $sconst = null;
+        }
+        else
+        {
+            $sconst = $smap->get("rr:constant");
+            $class = $smap->get("rr:class");
+            $template = $smap->get("rr:template");
+            
+            $vars = extract_vars($template);
+            $collection = $format_reader->iterate($iterator);
+        }
+        foreach($collection as $k => $obj)
+        {
+            #print_r($obj);
             if($template){
                 $url = $template;
                 foreach($vars as $k => $var){
@@ -321,9 +394,15 @@ route("/rml/:path", function($arg){
                         $val = $val[0];
                     $url = str_replace("{".$var."}", urlencode($val), $url);
                 }
+                $subj = $output->resource($url);
             }
-
-            $subj = $output->resource($url);
+            
+            if($sconst)
+            {
+                $subj = $sconst;
+                $url = $subj->getUri();
+            }
+            
             if($class){
                 $output->add($subj, "rdf:type", $class);
             }
@@ -381,101 +460,116 @@ route("/rml/:path", function($arg){
             {
                 $value = "";
                 $pred = $kv->get("rr:predicate");
-                $omap = $kv->get("rr:objectMap");
-
-                $const = $omap->get("rr:constant");
-                $otpl = $omap->get("rr:template");
-                $oref = $omap->get("rml:reference");
-                $dtype = $omap->get("rr:datatype");
-                $ttype = $omap->get("rr:termType");
-                $lang = $omap->get("rr:language");
-                $join = $omap->get("rr:parentTriplesMap");
-
-                if($const)
+                $_obj = $kv->get("rr:object");
+                //echo $pred->getUri(), " ";
+                if($_obj)
                 {
-                    $ovalue = $const;
+                    //echo $_obj->getUri();
+                    $ovalue = $_obj;
                 }
+                else
+                {
+                    $omap = $kv->get("rr:objectMap");
+
+                    $const = $omap->get("rr:constant");
+                    $otpl = $omap->get("rr:template");
+                    $oref = $omap->get("rml:reference");
+                    $dtype = $omap->get("rr:datatype");
+                    $ttype = $omap->get("rr:termType");
+                    $lang = $omap->get("rr:language");
+                    $join = $omap->get("rr:parentTriplesMap");
+                    $ovalue = null;
                 
-                if($otpl)
-                {
-                    //echo "tpl:", $otpl, " ";
-                    $tvars = extract_vars($otpl);
-                    $tmp = $otpl;
-                    foreach($tvars as $k => $var){
-                        $val = $format_reader->lookup($var, $obj);
-                        if(is_array($val))
-                            $val = $val[0];
-                        $tmp = str_replace("{".$var."}", $val, $tmp);
-                    }
-                    $ovalue = $tmp;
-                }
                 
-                if($oref)
-                {
-                    #echo "ref:", $oref, " ";
-                    $oref = $oref->getValue();
-                    $val = $format_reader->lookup($oref, $obj);
-                    $ovalue = array();
-                    if(is_array($val)){
-                        foreach($val as $vv => $_v)
-                            $ovalue[] = "".$_v;
-                    }
-                    else
-                        $ovalue[] = $val;
-                }
-
-                if($join)
-                {
-                    //echo "join: ";
-                    $ttype = _exp("rr:IRI");
-                    $jc = $omap->all("rr:joinCondition");
-                    $jval = array();
-                    foreach($jc as $k => $v)
+                    if($const)
                     {
-                        $parent = $v->get("rr:parent");
-                        $child = $v->get("rr:child")->getValue();
-                        $val = $format_reader->lookup($child, $obj);
+                        $ovalue = $const;
+                    }
+                    
+                    if($otpl)
+                    {
+                        //echo "tpl:", $otpl, " ";
+                        $tvars = extract_vars($otpl);
+                        $tmp = $otpl;
+                        foreach($tvars as $k => $var){
+                            $val = $format_reader->lookup($var, $obj);
+                            if(is_array($val))
+                                $val = $val[0];
+                            $tmp = str_replace("{".$var."}", $val, $tmp);
+                        }
+                        $ovalue = $tmp;
+                    }
+                    
+                    if($oref)
+                    {
+                        #echo "ref:", $oref, " ";
+                        #print_r($oref);
+                        if(is_object($oref))
+                            $oref = $oref->getValue();
+                        $val = $format_reader->lookup($oref, $obj);
+                        $ovalue = array();
                         if(is_array($val)){
-                            $cval = array();
-                            foreach($val as $vv => $_v) $cval[] = "".$_v;
+                            foreach($val as $vv => $_v)
+                                $ovalue[] = "".$_v;
                         }
                         else
-                            $cval = "".$val;
-
-                        $jval[$parent->getValue()] = $cval;
+                            $ovalue[] = $val;
                     }
-
-                    $ovalue = array();
-                    foreach($lookup[$join->getUri()][$mapuri] as $k => $pv)
+                    
+                    if($join)
                     {
-                        $match = true;
-                        foreach($jval as $key => $kval)
+                        //echo "join: ";
+                        $ttype = _exp("rr:IRI");
+                        $jc = $omap->all("rr:joinCondition");
+                        $jval = array();
+                        foreach($jc as $k => $v)
                         {
-                            $vmatch = false;
-                            if(is_array($kval)){
-                                foreach($kval as $kk => $kv)
-                                    if($kv==$pv[0][$key]){
-                                        $vmatch = true;
-                                        break;
-                                    }
-                                if(!$vmatch){
-                                    $match = false;
-                                    break;
-                                }
+                            $parent = $v->get("rr:parent");
+                            $child = $v->get("rr:child")->getValue();
+                            $val = $format_reader->lookup($child, $obj);
+                            if(is_array($val)){
+                                $cval = array();
+                                foreach($val as $vv => $_v) $cval[] = "".$_v;
                             }
                             else
-                                if($pv[0][$key]!=$kval){
-                                    $match = false;
-                                    break;
-                                }
+                                $cval = "".$val;
+
+                            $jval[$parent->getValue()] = $cval;
                         }
-                        if($match){
-                            $ovalue[] = $pv[1];
+
+                        $ovalue = array();
+                        foreach($lookup[$join->getUri()][$mapuri] as $k => $pv)
+                        {
+                            $match = true;
+                            foreach($jval as $key => $kval)
+                            {
+                                $vmatch = false;
+                                if(is_array($kval)){
+                                    foreach($kval as $kk => $kv)
+                                        if($kv==$pv[0][$key]){
+                                            $vmatch = true;
+                                            break;
+                                        }
+                                    if(!$vmatch){
+                                        $match = false;
+                                        break;
+                                    }
+                                }
+                                else
+                                    if($pv[0][$key]!=$kval){
+                                        $match = false;
+                                        break;
+                                    }
+                            }
+                            if($match){
+                                $ovalue[] = $pv[1];
+                            }
                         }
                     }
                 }
 
                 if ($ovalue==null) continue;
+
 
                 if(!is_array($ovalue))
                     $ovalue = array($ovalue);
